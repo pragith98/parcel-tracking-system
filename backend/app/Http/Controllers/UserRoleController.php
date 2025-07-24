@@ -28,6 +28,16 @@ class UserRoleController extends Controller
         }
     }
 
+    public function show(string $id)
+    {
+        try {
+            $userRole = $this->repository->getById($id);
+            return new UserRoleResource($userRole);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function store(StoreUserRoleRequest $request)
     {
         try {
