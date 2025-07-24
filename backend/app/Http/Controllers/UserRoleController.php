@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Requests\UserRole\StoreUserRoleRequest;
+use App\Http\Requests\UserRole\UpdateUserRoleRequest;
 use App\Http\Resources\UserRole\UserRoleResource;
 use App\Repositories\Interfaces\UserRoleRepositoryInterface;
 use Exception;
@@ -31,6 +32,18 @@ class UserRoleController extends Controller
     {
         try {
             $userRole = $this->repository->create($request);
+            return new UserRoleResource($userRole);
+        } catch (Exception $e) { 
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+    public function update(
+        string $id,
+        UpdateUserRoleRequest $request
+    ) {
+        try {
+            $userRole = $this->repository->update($id, $request);
             return new UserRoleResource($userRole);
         } catch (Exception $e) { 
             return ApiResponse::error($e->getMessage(), 500);

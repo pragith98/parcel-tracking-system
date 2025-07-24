@@ -64,7 +64,8 @@ class UserRoleRepository implements UserRoleRepositoryInterface
                 'name' => strtoupper($validatedData['name'])
             ];
 
-            return $userRole->update($data);
+            $userRole->update($data);
+            return $userRole;
         } catch (ModelNotFoundException $e) {
             throw new Exception("User role with ID {$id} not found.", 404);
         } catch (Exception $e) {
