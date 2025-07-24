@@ -10,4 +10,5 @@ Route::prefix('user-roles')->group(function () {
     Route::get('/{id}', [UserRoleController::class, 'show']);
     Route::post('/', [UserRoleController::class, 'store']);
     Route::put('/{id}', [UserRoleController::class, 'update']);
+    Route::delete('/{id}', [UserRoleController::class, 'destroy']);
 });

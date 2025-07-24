@@ -59,4 +59,14 @@ class UserRoleController extends Controller
             return ApiResponse::error($e->getMessage(), 500);
         }
     }
+
+    public function destroy(string $id)
+    {
+        try {
+            $this->repository->delete($id);
+            return response()->json(['success' => true], 200);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
 }
