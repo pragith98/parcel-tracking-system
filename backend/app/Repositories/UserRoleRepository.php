@@ -43,7 +43,7 @@ class UserRoleRepository implements UserRoleRepositoryInterface
             $validatedData = $request->validated();
 
             $data = [
-                'name' => $validatedData['name']
+                'name' => strtoupper($validatedData['name'])
             ];
 
             return $this->userRole->create($data);
@@ -61,7 +61,7 @@ class UserRoleRepository implements UserRoleRepositoryInterface
             $validatedData = $request->validated();
 
             $data = [
-                'name' => $validatedData['name']
+                'name' => strtoupper($validatedData['name'])
             ];
 
             return $userRole->update($data);

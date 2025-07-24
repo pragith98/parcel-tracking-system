@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\UserRole;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
 class UpdateUserRoleRequest extends FormRequest
@@ -29,5 +31,13 @@ class UpdateUserRoleRequest extends FormRequest
                 Rule::unique('user_roles', 'name')
             ]
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Get validation errors as a flat array
+        $errors = $validator->errors()->all();
+
+        throw new HttpResponseException(response()->json(['errors' => $errors], 422));
     }
 }
