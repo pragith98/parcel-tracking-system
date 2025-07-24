@@ -18,6 +18,16 @@ class CompanyInfoController extends Controller
         $this->repository = $repository;
     }
 
+    public function show()
+    {
+        try {
+            $companyInfo = $this->repository->get();
+            return new CompanyInfoResource($companyInfo);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function save(SaveCompanyInfoRequest $request) {
         try {
             $companyInfo = $this->repository->save($request);
