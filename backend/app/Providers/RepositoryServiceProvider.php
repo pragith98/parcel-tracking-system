@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\CompanyInfoRepository;
+use App\Repositories\Interfaces\CompanyInfoRepositoryInterface;
 use App\Repositories\Interfaces\UserRoleRepositoryInterface;
 use App\Repositories\UserRoleRepository;
 use Illuminate\Support\ServiceProvider;
@@ -14,6 +16,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(UserRoleRepositoryInterface::class, UserRoleRepository::class);
+        $this->app->bind(CompanyInfoRepositoryInterface::class, CompanyInfoRepository::class);
     }
 
     /**
