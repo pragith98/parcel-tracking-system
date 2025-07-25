@@ -29,6 +29,16 @@ class UserController extends Controller
         }
     }
 
+    public function show(string $id)
+    {
+        try {
+            $user = $this->repository->getById($id);
+            return new UserResource($user);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function store(StoreUserRequest $request)
     {
         try {
