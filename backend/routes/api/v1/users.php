@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::middleware(AuthenticateWithSanctumCookie::class)
 Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
     Route::post('/', [UserController::class, 'store']);
     Route::put('/{id}', [UserController::class, 'update']);
 });

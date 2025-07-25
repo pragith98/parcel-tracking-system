@@ -19,6 +19,16 @@ class UserController extends Controller
         $this->repository = $repository;
     }
 
+    public function index()
+    {
+        try {
+            $users = $this->repository->getAll();
+            return UserResource::collection($users);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function store(StoreUserRequest $request)
     {
         try {
