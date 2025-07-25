@@ -10,7 +10,6 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -55,7 +54,6 @@ class UserRepository implements UserRepositoryInterface
 
             return $this->user->create($data);
         } catch (Exception $e) {
-            Log::debug($e);
             throw new Exception("Failed to create user.", 500);
         }
     }

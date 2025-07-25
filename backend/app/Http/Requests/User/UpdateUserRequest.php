@@ -30,17 +30,17 @@ class UpdateUserRequest extends FormRequest
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')
+                Rule::unique('users', 'email')->ignore($this->id)
             ],
             'telephone' => [
                 'required',
                 'max:10',
-                Rule::unique('users', 'telephone')
+                Rule::unique('users', 'telephone')->ignore($this->id)
             ],
             'nic' => [
                 'required',
                 'max:12',
-                Rule::unique('users', 'nic')
+                Rule::unique('users', 'nic')->ignore($this->id)
             ],
             'address' => ['required','max:255'],
         ];
