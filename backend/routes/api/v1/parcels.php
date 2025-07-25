@@ -10,5 +10,6 @@ Route::prefix('parcels')
         Route::get('/{id}', [ParcelController::class, 'show']);
         Route::post('/', [ParcelController::class, 'store']);
         Route::put('/{id}', [ParcelController::class, 'update']);
+        Route::delete('/{id}', [ParcelController::class, 'destroy']);
     }
 );
