@@ -88,6 +88,7 @@ class ParcelRepository implements ParcelRepositoryInterface
         } catch (ModelNotFoundException $e) {
             throw new Exception("Parcel with ID {$id} not found.", 404);
         } catch (Exception $e) {
+            Log::debug($e);
             throw new Exception("Failed to update parcel.", 500);
         }
     }

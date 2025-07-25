@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Requests\Parcel\StoreParcelRequest;
+use App\Http\Requests\Parcel\UpdateParcelRequest;
 use App\Http\Resources\Parcel\ParcelResource;
 use App\Repositories\Interfaces\ParcelRepositoryInterface;
 use Exception;
@@ -22,6 +23,18 @@ class ParcelController extends Controller
     {
         try {
             $parcel = $this->repository->create($request);
+            return new ParcelResource($parcel);
+        } catch (Exception $e) { 
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+    public function update(
+        string $id,
+        UpdateParcelRequest $request
+    ) {
+        try {
+            $parcel = $this->repository->update($id, $request);
             return new ParcelResource($parcel);
         } catch (Exception $e) { 
             return ApiResponse::error($e->getMessage(), 500);
