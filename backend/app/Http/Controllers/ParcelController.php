@@ -29,6 +29,16 @@ class ParcelController extends Controller
         }
     }
 
+    public function show(string $id)
+    {
+        try {
+            $parcel = $this->repository->getById($id);
+            return new ParcelResource($parcel);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function store(StoreParcelRequest $request)
     {
         try {
