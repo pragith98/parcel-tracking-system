@@ -49,6 +49,7 @@ class UserRepository implements UserRepositoryInterface
                 'telephone' => $validatedData['telephone'],
                 'nic' => $validatedData['nic'],
                 'address' => $validatedData['address'],
+                'username' => $validatedData['username'],
                 'password' => $validatedData['password']
             ];
 
@@ -71,7 +72,8 @@ class UserRepository implements UserRepositoryInterface
                 'email' => $validatedData['email'],
                 'telephone' => $validatedData['telephone'],
                 'nic' => $validatedData['nic'],
-                'address' => $validatedData['address']
+                'address' => $validatedData['address'],
+                'username' => $validatedData['username']
             ];
 
             $user->update($data);
