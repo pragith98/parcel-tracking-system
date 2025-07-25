@@ -19,6 +19,16 @@ class ParcelController extends Controller
         $this->repository = $repository;
     }
 
+    public function index()
+    {
+        try {
+            $parcels = $this->repository->getAll();
+            return ParcelResource::collection($parcels);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function store(StoreParcelRequest $request)
     {
         try {
