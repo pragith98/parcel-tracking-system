@@ -4,6 +4,8 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -42,5 +44,13 @@ class UpdateUserRequest extends FormRequest
             ],
             'address' => ['required','max:255'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Get validation errors as a flat array
+        $errors = $validator->errors()->all();
+
+        throw new HttpResponseException(response()->json(['errors' => $errors], 422));
     }
 }
