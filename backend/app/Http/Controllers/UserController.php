@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -56,6 +57,18 @@ class UserController extends Controller
         try {
             $userRole = $this->repository->update($id, $request);
             return new UserResource($userRole);
+        } catch (Exception $e) { 
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
+    public function updatePassword(
+        string $id,
+        UpdateUserPasswordRequest $request
+    ) {
+        try {
+            $this->repository->updatePassword($id, $request);
+            return response()->json(['success' => true], 200);
         } catch (Exception $e) { 
             return ApiResponse::error($e->getMessage(), 500);
         }

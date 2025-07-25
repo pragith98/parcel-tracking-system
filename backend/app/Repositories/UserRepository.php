@@ -86,7 +86,7 @@ class UserRepository implements UserRepositoryInterface
     public function updatePassword(
         string $id,
         UpdateUserPasswordRequest $request
-    ): User {
+    ): bool {
         try {
             $user = $this->user->findOrFail($id);
             $validatedData = $request->validated();
@@ -96,7 +96,7 @@ class UserRepository implements UserRepositoryInterface
             ];
 
             $user->update($data);
-            return $user;
+            return true;
         } catch (ModelNotFoundException $e) {
             throw new Exception("User with ID {$id} not found.", 404);
         } catch (Exception $e) {
