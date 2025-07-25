@@ -33,7 +33,6 @@ class StoreParcelRequest extends FormRequest
             'senderTelephone' => ['required','max:10'],
             'senderAddress' => ['required','max:255'],
             'senderEmail' => ['required','email','max:255'],
-            'estimatedDeliveryDate' => ['nullable']
         ];
     }
 
