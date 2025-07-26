@@ -27,6 +27,13 @@ return new class extends Migration
             $table->date('deliveredAt')->nullable();
             $table->string('code', 255);
             $table->timestamps();
+            $table->uuid('updatedBy')->nullable();
+            $table->uuid('createdBy')->nullable();
+
+            $table->foreign('updatedBy')->references('id')->on('users')
+                ->onDelete('set null');
+            $table->foreign('createdBy')->references('id')->on('users')
+                ->onDelete('set null');
         });
     }
 
@@ -35,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('tracking_histories');
     }
 };

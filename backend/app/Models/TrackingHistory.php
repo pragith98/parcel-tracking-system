@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class Parcel extends Model
+class TrackingHistory extends Model
 {
-    protected $table = 'parcel';
+    protected $table = 'tracking_histories';
 
     public $timestamps = true;
 
@@ -17,27 +17,12 @@ class Parcel extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'remarks',
-        'receiverName',
-        'receiverTelephone',
-        'receiverAddress',
-        'receiverEmail',
-        'senderName',
-        'senderTelephone',
-        'senderAddress',
-        'senderEmail',
-        'estimatedDeliveryDate',
-        'pickedUpAt',
-        'deliveredAt',
-        'code'
+        'parcelId',
+        'note',
+        'status'
     ];
 
-    public function createdByUser()
-    {
-        return $this->hasOne(User::class, 'id', 'createdBy');
-    }
-
-    public function updatedByUser()
+    public function handledBy()
     {
         return $this->hasOne(User::class, 'id', 'updatedBy');
     }
@@ -51,10 +36,9 @@ class Parcel extends Model
                 $model->id = Str::uuid()->toString();
             }
 
-            // Set created_by, updated_by when creating a new model
+            // Set updated_by when creating a new model
             if (Auth::check()) {
                 $model->updatedBy = Auth::id();
-                $model->createdBy = Auth::id();
             }
         });
 

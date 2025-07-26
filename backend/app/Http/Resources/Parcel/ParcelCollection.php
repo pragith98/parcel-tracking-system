@@ -15,7 +15,7 @@ class ParcelCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => ParcelResource::collection($this->collection['data']),
+            'data' => ParcelResource::collection($this->collection),
             'total' => $this->collection->count()
         ];
     }
