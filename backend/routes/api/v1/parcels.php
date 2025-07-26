@@ -4,7 +4,8 @@ use App\Http\Controllers\ParcelController;
 use App\Http\Middleware\AuthenticateWithSanctumCookie;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('parcels')
+Route::middleware(AuthenticateWithSanctumCookie::class)
+    ->prefix('parcels')
     ->group(function () {
         Route::get('/', [ParcelController::class, 'index']);
         Route::get('/{id}', [ParcelController::class, 'show']);

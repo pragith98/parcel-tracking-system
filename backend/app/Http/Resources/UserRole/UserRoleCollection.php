@@ -15,7 +15,7 @@ class UserRoleCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => UserRoleResource::collection($this->collection['data']),
+            'data' => UserRoleResource::collection($this->collection),
             'total' => $this->collection->count()
         ];
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\TrackingHistory;
 
-use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +19,8 @@ class TrackingHistoryResource extends JsonResource
             'parcelId' => $this->parcelId,
             'note' => $this->note,
             'status' => $this->status,
-            'updatedBy' => [
+            'createdAt' => $this->created_at,
+            'handledBy' => [
                 'id' => $this->handledBy->id,
                 'name' => $this->handledBy->name
             ]

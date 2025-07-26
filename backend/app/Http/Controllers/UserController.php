@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Exception;
@@ -24,7 +25,7 @@ class UserController extends Controller
     {
         try {
             $users = $this->repository->getAll();
-            return UserResource::collection($users);
+            return new UserCollection($users);
         } catch (Exception $e) {
             return ApiResponse::error($e->getMessage(), 404);
         }

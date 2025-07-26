@@ -29,6 +29,16 @@ class ParcelResource extends JsonResource
             'pickedUpAt' => $this->pickedUpAt,
             'deliveredAt' => $this->deliveredAt,
             'code' => $this->code,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
+            'createdBy' => [
+                'id' => $this->createdByUser->id,
+                'name' => $this->createdByUser->name
+            ],
+            'updatedBy' => [
+                'id' => $this->updatedByUser->id,
+                'name' => $this->updatedByUser->name
+            ]
         ];
     }
 

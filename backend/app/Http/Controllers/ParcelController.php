@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\Parcel\StoreParcelRequest;
 use App\Http\Requests\Parcel\UpdateParcelRequest;
+use App\Http\Resources\Parcel\ParcelCollection;
 use App\Http\Resources\Parcel\ParcelResource;
 use App\Repositories\Interfaces\ParcelRepositoryInterface;
 use Exception;
@@ -23,7 +24,7 @@ class ParcelController extends Controller
     {
         try {
             $parcels = $this->repository->getAll();
-            return ParcelResource::collection($parcels);
+            return new ParcelCollection($parcels);
         } catch (Exception $e) {
             return ApiResponse::error($e->getMessage(), 404);
         }
