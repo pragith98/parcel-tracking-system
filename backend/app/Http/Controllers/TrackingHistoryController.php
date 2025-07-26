@@ -18,6 +18,16 @@ class TrackingHistoryController extends Controller
         $this->repository = $repository;
     }
 
+    public function getByParcelId(string $id)
+    {
+        try {
+            $histories = $this->repository->getByParcelId($id);
+            return TrackingHistoryResource::collection($histories);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 404);
+        }
+    }
+
     public function store(StoreTrackingHistoryRequest $request)
     {
         try {

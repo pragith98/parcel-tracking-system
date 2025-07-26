@@ -22,7 +22,10 @@ class TrackingHistoryRepository implements TrackingHistoryRepositoryInterface
     public function getByParcelId(string $parcelId): Collection
     {
         try {
-            return $this->trackingHistory->findOrFail($parcelId);
+            return $this->trackingHistory
+                ->where('parcelId', $parcelId)
+                ->orderBy('created_at', 'desc')
+                ->get();
         } catch (ModelNotFoundException $e) {
             throw new Exception("Tracking history with parcel ID {$parcelId} not found.", 404);
         }
