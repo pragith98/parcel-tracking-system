@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class UserRole extends Model
+class Permission extends Model
 {
-    protected $table = 'user_roles';
+    protected $table = 'permissions';
 
     public $timestamps = false;
 
@@ -16,7 +16,8 @@ class UserRole extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'name'
+        'name',
+        'userRoleId'
     ];
 
     protected static function boot()
@@ -28,10 +29,5 @@ class UserRole extends Model
                 $model->id = Str::uuid()->toString();
             }
         });
-    }
-
-    public function permissions()
-    {
-        return $this->hasMany(Permission::class, 'userRoleId');
     }
 }

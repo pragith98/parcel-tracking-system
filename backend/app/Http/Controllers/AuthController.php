@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\Auth\AuthResource;
 use App\Repositories\Interfaces\AuthRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,7 +21,12 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            return $this->repository->login($request);
+            $auth = $this->repository->login($request);
+            $userData = json_decode($auth->getContent(), true);
+            $transformedData = new AuthResource($userData);
+    
+            return response($transformedData)
+                ->withCookie($auth->headers->getCookies()[0]);
         } catch (Exception $e) { 
             return ApiResponse::error($e->getMessage(), 500);
         }

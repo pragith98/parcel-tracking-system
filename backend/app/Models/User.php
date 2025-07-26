@@ -34,7 +34,8 @@ class User extends Authenticatable
         'password',
         'telephone',
         'nic',
-        'address'
+        'address',
+        'userRoleId'
     ];
 
     /**
@@ -69,5 +70,10 @@ class User extends Authenticatable
                 $model->id = Str::uuid()->toString();
             }
         });
+    }
+
+    public function userRole()
+    {
+        return $this->hasOne(UserRole::class, 'id', 'userRoleId');
     }
 }

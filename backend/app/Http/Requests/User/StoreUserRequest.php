@@ -48,7 +48,12 @@ class StoreUserRequest extends FormRequest
                 Rule::unique('users', 'nic')
             ],
             'address' => ['required','max:255'],
-            'password' => ['required','max:255']
+            'password' => ['required','max:255'],
+            'userRoleId' => [
+                'required', 
+                'string',
+                Rule::exists('user_roles', 'id')
+            ],
         ];
     }
 
