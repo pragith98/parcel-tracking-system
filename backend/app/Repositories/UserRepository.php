@@ -50,7 +50,8 @@ class UserRepository implements UserRepositoryInterface
                 'nic' => $validatedData['nic'],
                 'address' => $validatedData['address'],
                 'username' => $validatedData['username'],
-                'password' => $validatedData['password']
+                'password' => $validatedData['password'],
+                'userRoleId' => $validatedData['userRoleId']
             ];
 
             return $this->user->create($data);
@@ -73,7 +74,8 @@ class UserRepository implements UserRepositoryInterface
                 'telephone' => $validatedData['telephone'],
                 'nic' => $validatedData['nic'],
                 'address' => $validatedData['address'],
-                'username' => $validatedData['username']
+                'username' => $validatedData['username'],
+                'userRoleId' => $validatedData['userRoleId']
             ];
 
             $user->update($data);

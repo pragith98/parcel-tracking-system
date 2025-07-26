@@ -26,7 +26,8 @@ class AuthRepository implements AuthRepositoryInterface
             // Set the token in an HTTP-only cookie
             $cookie = cookie('auth_token', $token, 60 * 24 * 7, null, null, false, true); // 1 week
             
-            return response()->json(['user' => $user])->withCookie($cookie);
+            $user->userRole->permissions;
+            return response($user)->withCookie($cookie);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);

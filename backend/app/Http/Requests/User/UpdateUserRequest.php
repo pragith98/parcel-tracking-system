@@ -48,6 +48,11 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users', 'nic')->ignore($this->id)
             ],
             'address' => ['required','max:255'],
+            'userRoleId' => [
+                'required', 
+                'string',
+                Rule::exists('user_roles', 'id')
+            ],
         ];
     }
 
