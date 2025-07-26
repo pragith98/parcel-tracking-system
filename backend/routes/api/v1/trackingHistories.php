@@ -7,5 +7,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('tracking-histories')
     ->group(function () {
         Route::post('/', [TrackingHistoryController::class, 'store']);
+        Route::delete('/{id}', [TrackingHistoryController::class, 'destroy']);
     }
 );
