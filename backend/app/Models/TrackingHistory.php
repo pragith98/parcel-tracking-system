@@ -17,6 +17,7 @@ class TrackingHistory extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'parcelId',
         'note',
         'status'
     ];

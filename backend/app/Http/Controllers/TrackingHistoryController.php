@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Helpers\ApiResponse;
+use App\Http\Requests\TrackingHistory\StoreTrackingHistoryRequest;
+use App\Http\Resources\TrackingHistory\TrackingHistoryResource;
+use App\Repositories\Interfaces\TrackingHistoryRepositoryInterface;
+use Exception;
+use Illuminate\Http\Request;
+
+class TrackingHistoryController extends Controller
+{
+    protected $repository;
+
+    public function __construct(TrackingHistoryRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function store(StoreTrackingHistoryRequest $request)
+    {
+        try {
+            $history = $this->repository->create($request);
+            return new TrackingHistoryResource($history);
+        } catch (Exception $e) { 
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+}
