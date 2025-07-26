@@ -22,6 +22,11 @@ class TrackingHistory extends Model
         'status'
     ];
 
+    public function handledBy()
+    {
+        return $this->hasOne(User::class, 'id', 'updatedBy');
+    }
+
     protected static function boot()
     {
         parent::boot();
