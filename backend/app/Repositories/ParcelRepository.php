@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\Parcel\PaginatedParcelRequest;
 use App\Http\Requests\Parcel\StoreParcelRequest;
 use App\Http\Requests\Parcel\UpdateParcelRequest;
 use App\Models\Parcel;
 use App\Repositories\Interfaces\ParcelRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class ParcelRepository implements ParcelRepositoryInterface
@@ -20,11 +20,21 @@ class ParcelRepository implements ParcelRepositoryInterface
         $this->parcel = $parcel;
     }
 
-    public function getAll(): Collection
+    public function getAll(PaginatedParcelRequest $request): array
     {
+        $limit = $request->getLimit();
+        $page = $request->getPage();
+
         try {
-            return $this->parcel->all();
+            $query = $this->parcel->query();
+            $paginated = $query->paginate($limit, ['*'], 'page', $page);
+
+            return [
+                'data' => $paginated->items(),
+                'total' => $paginated->total()
+            ];
         } catch (ModelNotFoundException $e) {
+            Log::debug($e);
             throw new Exception('Parcel not found', 404);
         }
     }
