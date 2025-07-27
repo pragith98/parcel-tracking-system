@@ -16,7 +16,10 @@ class ParcelPaginatedCollection extends ResourceCollection
     {
         return [
             'data' => ParcelResource::collection($this->collection['data']),
-            'total' => $this->collection['total']
+            'total' => $this->collection['total'],
+            'currentPage' => $this->collection['currentPage'],
+            'lastPage' => $this->collection['lastPage'],
+            'perPage' => $this->collection['perPage'],
         ];
     }
 

@@ -26,6 +26,17 @@ class PaginatedParcelRequest extends FormRequest
         return [
             'limit' => ['required', 'integer', 'min:0'],
             'page' => ['required', 'integer', 'min:1'],
+            'completed' => ['nullable', 'in:COMPLETED,NOT_COMPLETED'],
+            'senderName' => ['nullable', 'max: 255'],
+            'senderTelephone' => ['nullable', 'max: 255'],
+            'senderAddress' => ['nullable', 'max: 255'],
+            'receiverName' => ['nullable', 'max: 255'],
+            'receiverTelephone' => ['nullable', 'max: 255'],
+            'receiverAddress' => ['nullable', 'max: 255'],
+            'code' => ['nullable', 'max: 255'],
+            'pickedUpAt' => ['nullable', 'max: 255'],
+            'deliveredAt' => ['nullable', 'max: 255'],
+            'createdAt' => ['nullable', 'max: 255'],
         ];
     }
 
