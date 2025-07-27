@@ -2,14 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\Parcel\PaginatedParcelRequest;
 use App\Http\Requests\Parcel\StoreParcelRequest;
 use App\Http\Requests\Parcel\UpdateParcelRequest;
 use App\Models\Parcel;
 use App\Repositories\Interfaces\ParcelRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class ParcelRepository implements ParcelRepositoryInterface
 {
@@ -20,10 +19,64 @@ class ParcelRepository implements ParcelRepositoryInterface
         $this->parcel = $parcel;
     }
 
-    public function getAll(): Collection
+    public function getAll(PaginatedParcelRequest $request): array
     {
+        $limit = $request->getLimit();
+        $page = $request->getPage();
+
         try {
-            return $this->parcel->all();
+            $validatedRequest = $request->validated();
+            $completed = $validatedRequest['completed'] ?? 'NOT_COMPLETED';
+            $senderName = $validatedRequest['senderName'] ?? null;
+            $senderTelephone = $validatedRequest['senderTelephone'] ?? null;
+            $receiverName = $validatedRequest['receiverName'] ?? null;
+            $receiverTelephone = $validatedRequest['receiverTelephone'] ?? null;
+            $code = $validatedRequest['code'] ?? null;
+            $pickedUpAt = $validatedRequest['pickedUpAt'] ?? null;
+            $deliveredAt = $validatedRequest['deliveredAt'] ?? null;
+            $createdAt = $validatedRequest['createdAt'] ?? null;
+
+            $query = $this->parcel->query();
+
+            if ($completed == 'NOT_COMPLETED') {
+                $query->whereNull('deliveredAt');
+            } else {
+                $query->whereNotNull('deliveredAt');
+            }
+            if ($senderName) {
+                $query->where('senderName', 'like', '%' . $senderName . '%');
+            }
+            if ($senderTelephone) {
+                $query->where('senderTelephone', 'like', '%' . $senderTelephone . '%');
+            }
+            if ($receiverName) {
+                $query->where('receiverName', 'like', '%' . $receiverName . '%');
+            }
+            if ($receiverTelephone) {
+                $query->where('receiverTelephone', 'like', '%' . $receiverTelephone . '%');
+            }
+            if ($code) {
+                $query->where('code', 'like', '%' . $code . '%');
+            }
+            if ($pickedUpAt) {
+                $query->where('pickedUpAt', 'like', '%' . $pickedUpAt . '%');
+            }
+            if ($deliveredAt) {
+                $query->where('deliveredAt', 'like', '%' . $deliveredAt . '%');
+            }
+            if ($createdAt) {
+                $query->where('created_at', 'like', '%' . $createdAt . '%');
+            }
+
+            $paginated = $query->paginate($limit, ['*'], 'page', $page);
+
+            return [
+                'data' => $paginated->items(),
+                'total' => $paginated->total(),
+                'currentPage' => $paginated->currentPage(),
+                'lastPage' => $paginated->lastPage(),
+                'perPage' => $paginated->perPage()
+            ];
         } catch (ModelNotFoundException $e) {
             throw new Exception('Parcel not found', 404);
         }
@@ -88,7 +141,6 @@ class ParcelRepository implements ParcelRepositoryInterface
         } catch (ModelNotFoundException $e) {
             throw new Exception("Parcel with ID {$id} not found.", 404);
         } catch (Exception $e) {
-            Log::debug($e);
             throw new Exception("Failed to update parcel.", 500);
         }
     }

@@ -2,14 +2,14 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Http\Requests\Parcel\PaginatedParcelRequest;
 use App\Http\Requests\Parcel\StoreParcelRequest;
 use App\Http\Requests\Parcel\UpdateParcelRequest;
 use App\Models\Parcel;
-use Illuminate\Support\Collection;
 
 interface ParcelRepositoryInterface
 {
-    public function getAll(): Collection;
+    public function getAll(PaginatedParcelRequest $request): array;
 
     public function getById(string $id): Parcel;
 

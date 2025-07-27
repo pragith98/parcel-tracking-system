@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Http\Requests\Parcel\PaginatedParcelRequest;
 use App\Http\Requests\Parcel\StoreParcelRequest;
 use App\Http\Requests\Parcel\UpdateParcelRequest;
-use App\Http\Resources\Parcel\ParcelCollection;
+use App\Http\Resources\Parcel\ParcelPaginatedCollection;
 use App\Http\Resources\Parcel\ParcelResource;
 use App\Repositories\Interfaces\ParcelRepositoryInterface;
 use Exception;
@@ -20,11 +21,12 @@ class ParcelController extends Controller
         $this->repository = $repository;
     }
 
-    public function index()
+    public function index(PaginatedParcelRequest $request)
     {
         try {
-            $parcels = $this->repository->getAll();
-            return new ParcelCollection($parcels);
+            $parcels = $this->repository->getAll($request);
+            return new ParcelPaginatedCollection($parcels);
+            return $parcels;
         } catch (Exception $e) {
             return ApiResponse::error($e->getMessage(), 404);
         }
