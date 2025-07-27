@@ -1,12 +1,18 @@
 import Footer from "./components/Footer";
+import MainMenu from "./components/MainMenu";
 import "./index.css";
 
 function App() {
   return (
-    <>
-      <p className="text-red-600">hello</p>
-      <Footer />
-    </>
+    <div className="flex flex-row">
+      <MainMenu />
+
+      <div className="flex flex-col flex-1 w-full">
+        <div>body</div>
+        
+        <Footer />
+      </div>
+    </div>
   );
 }
 
