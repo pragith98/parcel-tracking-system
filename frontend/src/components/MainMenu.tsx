@@ -11,23 +11,19 @@ function MainMenu() {
         flex-col 
         w-64 
         h-screen 
-        px-5 
-        py-8 
         overflow-y-auto 
-      bg-white 
         border-r 
         rtl:border-r-0 
         rtl:border-l 
-      dark:bg-gray-900 
-      dark:border-gray-700
+      bg-gray-900 
+      border-gray-700
       `}
     >
-      <div className="flex flex-row justify-between">
-        <img className="w-auto h-7" src="logo.svg" />
+      <div className="h-10 border-b border-b-gray-700 px-5 flex items-center">
         <h1 className="text-white text-xl font-black">PARCEL TRACKER</h1>
       </div>
 
-      <div className="flex flex-col justify-between flex-1 mt-6">
+      <div className="flex flex-col justify-between flex-1 mt-6 px-5 ">
         <nav className="-mx-3 space-y-6 ">
           {menuItems.map((item) => MenuItem(item))}
         </nav>
@@ -39,7 +35,7 @@ function MainMenu() {
 function MenuItem(menuItem: MainMenuItem) {
   return (
     <div className="space-y-3 " key={menuItem.parentId}>
-      <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">
+      <label className="px-3 text-xs uppercase text-gray-400">
         {menuItem.name}
       </label>
 
@@ -50,16 +46,13 @@ function MenuItem(menuItem: MainMenuItem) {
             items-center 
             px-3 
             py-2 
-            text-gray-600 
             transition-colors 
             duration-300 
             transform 
             rounded-lg 
-          dark:text-gray-200 
-          hover:bg-gray-100 
-          dark:hover:bg-gray-800 
-          dark:hover:text-gray-200 
-          hover:text-gray-700
+          text-gray-200 
+          hover:bg-gray-800 
+          hover:text-gray-200 
           `}
           href="#"
           key={children.id}

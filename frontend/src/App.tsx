@@ -1,4 +1,5 @@
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 import MainMenu from "./components/MainMenu";
 import "./index.css";
 
@@ -8,8 +9,10 @@ function App() {
       <MainMenu />
 
       <div className="flex flex-col flex-1 w-full">
+        <Header />
+
         <div>body</div>
-        
+
         <Footer />
       </div>
     </div>
