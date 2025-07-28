@@ -2,7 +2,7 @@ import { FormStyles } from "../styles";
 
 function CompanyPage() {
   return (
-    <div className="p-2">
+    <div>
       <form>
         <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-3">
           <div>

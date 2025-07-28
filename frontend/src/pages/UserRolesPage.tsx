@@ -11,7 +11,7 @@ function UserRolesPage() {
   };
 
   return (
-    <div className="p-2">
+    <div>
       <table className={TableStyles.table}>
         <thead className={TableStyles.header}>
           <tr>

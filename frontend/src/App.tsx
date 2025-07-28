@@ -2,7 +2,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MainMenu from "./components/MainMenu";
 import "./index.css";
-import CompanyPage from "./pages/CompanyPage";
+import AllParcelsPage from "./pages/AllParcelsPage";
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
       <div className="flex flex-col flex-1 w-full">
         <Header />
 
-        <div>
-          <CompanyPage />
+        <div className="p-2">
+          <AllParcelsPage />
         </div>
 
         <Footer />
