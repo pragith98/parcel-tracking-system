@@ -2,6 +2,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MainMenu from "./components/MainMenu";
 import "./index.css";
+import AllUsersPage from "./pages/AllUsersPage";
 
 function App() {
   return (
@@ -11,7 +12,9 @@ function App() {
       <div className="flex flex-col flex-1 w-full">
         <Header />
 
-        <div>body</div>
+        <div>
+          <AllUsersPage />
+        </div>
 
         <Footer />
       </div>

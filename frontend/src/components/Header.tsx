@@ -1,4 +1,5 @@
 import { MdInventory } from "react-icons/md";
+import AddNewItemButton from "./AddNewItemButton";
 
 function Header() {
   const companyName = "Flash Delivers";
@@ -11,6 +12,7 @@ function Header() {
 
   return (
     <nav className="flex flex-col">
+      {/* Top Header */}
       <div
         className={`
           relative 
@@ -51,13 +53,20 @@ function Header() {
           </div>
         </button>
       </div>
+      {/* End of top header */}
 
-      <div className="h-10 px-3 flex items-center gap-3 shadow">
-        <MdInventory size={20} className="text-gray-500" />
-        <h1 className="text-gray-800 font-semibold text-xl">
-          {currentPageTitle}
-        </h1>
+      {/* Bottom Header */}
+      <div className="h-12 px-3 flex flex-row items-center shadow justify-between">
+        <div className="flex items-center gap-3">
+          <MdInventory size={20} className="text-gray-500" />
+          <h1 className="text-gray-800 font-semibold text-xl">
+            {currentPageTitle}
+          </h1>
+        </div>
+
+        <AddNewItemButton />
       </div>
+      {/* End of bottom header */}
     </nav>
   );
 }
