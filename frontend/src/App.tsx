@@ -2,7 +2,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MainMenu from "./components/MainMenu";
 import "./index.css";
-import AllUsersPage from "./pages/AllUsersPage";
+import UserRolesPage from "./pages/UserRolesPage";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Header />
 
         <div>
-          <AllUsersPage />
+          <UserRolesPage />
         </div>
 
         <Footer />
