@@ -4,7 +4,10 @@ import ModalWindow from "./ModalWindow";
 import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import { resetSelectedUserRole } from "../store/user-role.slice";
+import {
+  resetSelectedUserRole,
+  updateUserRole,
+} from "../store/user-role.slice";
 
 interface UserRoleFormProps {
   onClose: () => void;
@@ -39,6 +42,19 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
     onClose();
   };
 
+  const onClickSubmit = () => {
+    if (!formData.name.trim()) {
+      alert("Role is required.");
+      return false;
+    }
+
+    if (formData.id) {
+      dispatch(updateUserRole(formData));
+    }
+
+    onClickClose();
+  };
+
   return (
     <>
       {isOpen && (
@@ -50,7 +66,7 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
               <div>
                 <label className={FormStyles.formFieldLabel}>Role</label>
                 <input
-                  name="role"
+                  name="name"
                   autoFocus={true}
                   type="text"
                   value={formData.name}
@@ -66,7 +82,7 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
               <Button variant="outlined" onClick={onClickClose}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={onClickClose}>
+              <Button variant="primary" onClick={onClickSubmit}>
                 Save
               </Button>
             </div>
