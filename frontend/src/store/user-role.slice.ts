@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { UserRole } from "../types/user-role.type";
-import { fetchUserRoles } from "../api/user-role-api.service";
+import { deleteUserRoles, fetchUserRoles } from "../api/user-role-api.service";
 
 interface UserRoleState {
   current: UserRole | null;
-  list:    UserRole[];
+  list: UserRole[];
   loading: boolean;
-  error:   string | null;
+  error: string | null;
 }
 
 const initialState: UserRoleState = {
@@ -17,6 +17,13 @@ const initialState: UserRoleState = {
 };
 
 export const getUserRoles = createAsyncThunk('userRole/fetch', fetchUserRoles);
+export const removeUserRole = createAsyncThunk(
+  'userRole/delete',
+  async (id: string, { dispatch }) => {
+    await deleteUserRoles(id);
+    await dispatch(getUserRoles());
+  }
+);
 
 const userRoleSlice = createSlice({
   name: 'userRole',
@@ -36,6 +43,20 @@ const userRoleSlice = createSlice({
       .addCase(getUserRoles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? 'Failed to fetch user roles';
+      })
+
+      // Delete
+      .addCase(removeUserRole.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeUserRole.fulfilled, state => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(removeUserRole.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Failed to delete user role';
       });
   }
 });
