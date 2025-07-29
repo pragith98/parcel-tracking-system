@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { UserRole } from "../types/user-role.type";
-import { deleteUserRoles, fetchUserRoles } from "../api/user-role-api.service";
+import { deleteUserRoles, fetchUserRoles, getUserRoleById } from "../api/user-role-api.service";
 
 interface UserRoleState {
   current: UserRole | null;
@@ -17,6 +17,7 @@ const initialState: UserRoleState = {
 };
 
 export const getUserRoles = createAsyncThunk('userRole/fetch', fetchUserRoles);
+export const selectUserRoleById = createAsyncThunk('userRole/select', getUserRoleById);
 export const removeUserRole = createAsyncThunk(
   'userRole/delete',
   async (id: string, { dispatch }) => {
@@ -28,7 +29,11 @@ export const removeUserRole = createAsyncThunk(
 const userRoleSlice = createSlice({
   name: 'userRole',
   initialState,
-  reducers: {},
+  reducers: {
+    resetSelectedUserRole(state) {
+      state.current = null;
+    }
+  },
   extraReducers: builder => {
     builder
       // Fetch
@@ -38,11 +43,25 @@ const userRoleSlice = createSlice({
       })
       .addCase(getUserRoles.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload.data;
+        state.list = action.payload.data as UserRole [];
       })
       .addCase(getUserRoles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? 'Failed to fetch user roles';
+      })
+
+      // Get by id
+      .addCase(selectUserRoleById.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(selectUserRoleById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.current = action.payload.data as UserRole;
+      })
+      .addCase(selectUserRoleById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Failed to fetch user role by id';
       })
 
       // Delete
@@ -61,4 +80,5 @@ const userRoleSlice = createSlice({
   }
 });
 
+export const { resetSelectedUserRole } = userRoleSlice.actions;
 export default userRoleSlice.reducer;

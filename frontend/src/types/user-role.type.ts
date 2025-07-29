@@ -4,7 +4,7 @@ export interface UserRole {
 }
 
 export interface UserRoleApiResponse {
-  data:     UserRole[];
+  data:     UserRole[] | UserRole;
   success:  true;
 }
 

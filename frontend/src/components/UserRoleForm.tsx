@@ -1,15 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormStyles } from "../styles";
 import ModalWindow from "./ModalWindow";
 import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { resetSelectedUserRole } from "../store/user-role.slice";
 
 interface UserRoleFormProps {
   onClose: () => void;
 }
 
 function UserRoleForm({ onClose }: UserRoleFormProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const { current } = useSelector((state: RootState) => state.userRole);
   const [isOpen, setOpen] = useState(true);
-  const [role, setRole] = useState("");
+  const [formData, setFormData] = useState({
+    id: "",
+    name: "",
+  });
+
+  useEffect(() => {
+    if (current) {
+      setFormData(current);
+    }
+
+    return () => {
+      dispatch(resetSelectedUserRole());
+    };
+  }, [current, dispatch]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const onClickClose = () => {
     setOpen(false);
@@ -30,9 +53,9 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
                   name="role"
                   autoFocus={true}
                   type="text"
-                  value={role}
+                  value={formData.name}
                   className={FormStyles.formField}
-                  onChange={(event) => setRole(event.target.value)}
+                  onChange={handleInputChange}
                 />
               </div>
             </form>

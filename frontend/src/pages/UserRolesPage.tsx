@@ -1,18 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TableStyles } from "../styles";
 import type { AppDispatch, RootState } from "../store/store";
-import { useEffect } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Alert from "../components/Alert";
-import { getUserRoles, removeUserRole } from "../store/user-role.slice";
+import { getUserRoles, removeUserRole, selectUserRoleById } from "../store/user-role.slice";
 import Button from "../components/Button";
+import UserRoleForm from "../components/UserRoleForm";
 
 function UserRolesPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { list, error } = useSelector((state: RootState) => state.userRole);
+  const [isFormOpen, setFormOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getUserRoles());
   }, [dispatch]);
+
+  const onTriggerOpenForm = () => {
+    setFormOpen(true);
+  };
 
   const formatUserRoles = () => {
     let count = 0;
@@ -22,7 +28,17 @@ function UserRolesPage() {
     });
   };
 
-  const onClickDelete = (id: string) => {
+  const onClickSelectItem = (id: string) => {
+    dispatch(selectUserRoleById(id));
+    onTriggerOpenForm();
+  }
+
+  const onClickDelete = (
+    id: string, 
+    event: MouseEvent
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
     dispatch(removeUserRole(id));
   };
 
@@ -47,7 +63,11 @@ function UserRolesPage() {
 
         <tbody className={TableStyles.body}>
           {formatUserRoles().map((item) => (
-            <tr className={TableStyles.row} key={item.index}>
+            <tr
+              className={TableStyles.row}
+              key={item.index}
+              onClick={() => onClickSelectItem(item.id)}
+            >
               <td className={TableStyles.data}>
                 <span className="text-xs">{item.index}</span>
               </td>
@@ -60,7 +80,7 @@ function UserRolesPage() {
                 <div className="w-20">
                   <Button
                     variant="danger"
-                    onClick={() => onClickDelete(item.id)}
+                    onClick={(e) => onClickDelete(item.id, e)}
                   >
                     Delete
                   </Button>
@@ -70,6 +90,8 @@ function UserRolesPage() {
           ))}
         </tbody>
       </table>
+
+      {isFormOpen && <UserRoleForm onClose={() => setFormOpen(false)} />}
     </div>
   );
 }
