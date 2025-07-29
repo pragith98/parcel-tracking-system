@@ -1,10 +1,21 @@
-import TablePagination from "../components/TablePagination";
+import { useDispatch, useSelector } from "react-redux";
 import { TableStyles } from "../styles";
+import type { AppDispatch, RootState } from "../store/store";
+import { useEffect } from "react";
+import Alert from "../components/Alert";
+import { getUserRoles } from "../store/user-role.slice";
 
 function UserRolesPage() {
-  const getUserRoles = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { list, error } = useSelector((state: RootState) => state.userRole);
+
+  useEffect(() => {
+    dispatch(getUserRoles());
+  }, [dispatch]);
+
+  const formatUserRoles = () => {
     let count = 0;
-    return userRoles.map((role) => {
+    return list.map((role) => {
       count++;
       return { ...role, index: count };
     });
@@ -12,6 +23,8 @@ function UserRolesPage() {
 
   return (
     <div>
+      {error && <Alert type="ERROR" message={error} />}
+
       <table className={TableStyles.table}>
         <thead className={TableStyles.header}>
           <tr>
@@ -26,10 +39,10 @@ function UserRolesPage() {
         </thead>
 
         <tbody className={TableStyles.body}>
-          {getUserRoles().map((item) => (
+          {formatUserRoles().map((item) => (
             <tr className={TableStyles.row} key={item.index}>
               <td className={TableStyles.data}>
-                <span className="text-xs" >{item.index}</span>
+                <span className="text-xs">{item.index}</span>
               </td>
 
               <td className={TableStyles.data}>
@@ -39,16 +52,8 @@ function UserRolesPage() {
           ))}
         </tbody>
       </table>
-
-      <TablePagination />
     </div>
   );
 }
-
-const userRoles = [
-  { id: "1", name: "ADMIN" },
-  { id: "2", name: "OWNER" },
-  { id: "3", name: "WORKER" },
-];
 
 export default UserRolesPage;
