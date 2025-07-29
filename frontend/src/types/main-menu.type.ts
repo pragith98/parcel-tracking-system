@@ -1,9 +1,10 @@
 import type { IconType } from "react-icons";
 
 export interface MainMenuChildrenItem {
-  id:   number;
-  name: string;
-  icon: IconType;
+  id:     number;
+  name:   string;
+  icon:   IconType;
+  route:  string;
 }
 
 export interface MainMenuItem {

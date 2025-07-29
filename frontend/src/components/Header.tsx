@@ -1,7 +1,12 @@
 import { MdInventory } from "react-icons/md";
 import AddNewItemButton from "./AddNewItemButton";
+import { useLocation } from "react-router-dom";
+import { ROUTE_CONFIG } from "../constants/routes";
 
 function Header() {
+  const location = useLocation();
+  const { showAddNew } = ROUTE_CONFIG[location.pathname] || {};
+
   const companyName = "Flash Delivers";
   const currentPageTitle = "All Parcels";
   const userName = "Kasun";
@@ -64,7 +69,7 @@ function Header() {
           </h1>
         </div>
 
-        <AddNewItemButton />
+        {showAddNew && <AddNewItemButton />}
       </div>
       {/* End of bottom header */}
     </nav>

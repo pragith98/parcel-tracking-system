@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { MainMenuItems } from "../constants/main-menu";
 import type { MainMenuItem } from "../types/main-menu.type";
 
@@ -33,11 +34,19 @@ function MainMenu() {
 }
 
 function MenuItem(menuItem: MainMenuItem) {
+  const navigate = useNavigate();
+
+  const onClickNavigate = (route: string) => {
+    navigate(route);
+  };
+
   return (
     <div className="space-y-3 " key={menuItem.parentId}>
-      <label className="px-3 text-xs uppercase text-gray-400">
-        {menuItem.name}
-      </label>
+      {menuItem.name.length > 0 ? (
+        <label className="px-3 text-xs uppercase text-gray-400">
+          {menuItem.name}
+        </label>
+      ) : null}
 
       {menuItem.children.map((children) => (
         <a
@@ -54,7 +63,7 @@ function MenuItem(menuItem: MainMenuItem) {
           hover:bg-gray-800 
           hover:text-gray-200 
           `}
-          href="#"
+          onClick={() => onClickNavigate(children.route)}
           key={children.id}
         >
           {<children.icon />}
