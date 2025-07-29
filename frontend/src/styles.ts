@@ -39,6 +39,14 @@ export const TableStyles = {
 }
 
 export const FormStyles = {
+  formSectionTitle: `
+    text-sm 
+    font-medium 
+    mt-6 
+    mb-2 
+    text-gray-500
+  `,
+
   formFieldLabel: `text-gray-700`,
 
   formField: `

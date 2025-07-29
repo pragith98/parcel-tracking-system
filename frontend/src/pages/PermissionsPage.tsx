@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserForm from "../components/UserForm";
+import ParcelForm from "../components/ParcelForm";
 
 function PermissionsPage() {
   const [isFormOpen, setFormOpen] = useState(false);
@@ -17,7 +17,7 @@ function PermissionsPage() {
         Open Modal
       </button>
 
-      {isFormOpen ? <UserForm onClose={() => setFormOpen(false)} /> : null}
+      {isFormOpen ? <ParcelForm onClose={() => setFormOpen(false)} /> : null}
     </div>
   );
 }
