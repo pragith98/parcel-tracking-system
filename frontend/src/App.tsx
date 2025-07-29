@@ -11,25 +11,55 @@ import AllUsersPage from "./pages/AllUsersPage";
 import UserRolesPage from "./pages/UserRolesPage";
 import CompanyPage from "./pages/CompanyPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
+import { useSelector } from "react-redux";
+import type { RootState } from "./store/store";
 
 function App() {
+  const { isAuth } = useSelector((state: RootState) => state.auth);
+
   return (
     <BrowserRouter>
       <div className="flex flex-row">
-        <MainMenu />
+        {isAuth && <MainMenu />}
 
         <div className="flex flex-col flex-1 w-full">
-          <Header />
+          {isAuth && <Header />}
 
           <div className="p-2">
             <Routes>
-              <Route path={ROUTES.HOME} element={<DashboardPage />} />
-              <Route path={ROUTES.PARCELS} element={<AllParcelsPage />} />
-              <Route path={ROUTES.USERS} element={<AllUsersPage />} />
-              <Route path={ROUTES.USER_ROLES} element={<UserRolesPage />} />
-              <Route path={ROUTES.PERMISSIONS} element={<PermissionsPage />} />
-              <Route path={ROUTES.COMPANY} element={<CompanyPage />} />
-              <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
+              <Route
+                path={ROUTES.LOGIN}
+                element={isAuth ? <DashboardPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.HOME}
+                element={isAuth ? <DashboardPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.PARCELS}
+                element={isAuth ? <AllParcelsPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.USERS}
+                element={isAuth ? <AllUsersPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.USER_ROLES}
+                element={isAuth ? <UserRolesPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.PERMISSIONS}
+                element={isAuth ? <PermissionsPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.COMPANY}
+                element={isAuth ? <CompanyPage /> : <LoginPage />}
+              />
+              <Route
+                path={ROUTES.NOT_FOUND}
+                element={isAuth ? <NotFoundPage /> : <LoginPage />}
+              />
             </Routes>
           </div>
 

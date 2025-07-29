@@ -5,6 +5,7 @@ export const ROUTES = {
   USER_ROLES: '/user-roles',
   PERMISSIONS: '/permissions',
   COMPANY: '/company',
+  LOGIN: '/login',
   NOT_FOUND: '*'
 }
 
