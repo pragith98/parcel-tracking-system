@@ -3,11 +3,12 @@ import { FormStyles } from "../styles";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import { getCompany } from "../store/company.slice";
+import { getCompany, updateCompany } from "../store/company.slice";
+import Alert from "../components/Alert";
 
 function CompanyPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { company } = useSelector((state: RootState) => state.company);
+  const { company, error } = useSelector((state: RootState) => state.company);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,10 +22,10 @@ function CompanyPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (company) {
+    if (company && !formData.name) {
       setFormData(company);
     }
-  }, [company]);
+  }, [company, formData.name]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,8 +63,7 @@ function CompanyPage() {
 
   const onClickSave = () => {
     if (!formDataValidate()) return;
-    // Proceed with save logic here
-    alert("Form data is valid!");
+    dispatch(updateCompany(formData));
   };
 
   return (
@@ -73,7 +73,7 @@ function CompanyPage() {
           <div>
             <label className={FormStyles.formFieldLabel}>Company Name</label>
             <input
-              id="name"
+              name="name"
               type="text"
               className={FormStyles.formField}
               value={formData.name}
@@ -84,7 +84,7 @@ function CompanyPage() {
           <div>
             <label className={FormStyles.formFieldLabel}>Telephone</label>
             <input
-              id="telephone"
+              name="telephone"
               type="text"
               className={FormStyles.formField}
               value={formData.telephone}
@@ -95,7 +95,7 @@ function CompanyPage() {
           <div>
             <label className={FormStyles.formFieldLabel}>Email</label>
             <input
-              id="email"
+              name="email"
               type="text"
               className={FormStyles.formField}
               value={formData.email}
@@ -107,7 +107,7 @@ function CompanyPage() {
         <div className="mt-6">
           <label className={FormStyles.formFieldLabel}>Address</label>
           <textarea
-            id="address"
+            name="address"
             className={FormStyles.formField}
             rows={3}
             value={formData.address}
@@ -123,6 +123,8 @@ function CompanyPage() {
           </div>
         </div>
       </form>
+
+      {error && <Alert type="ERROR" message={error} />}
     </div>
   );
 }

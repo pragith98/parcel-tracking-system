@@ -20,9 +20,6 @@ export const api = {
   put: <T = unknown>(url: string, data?: unknown) =>
     apiClient.put<T>(url, data).then(res => res.data),
 
-  patch: <T = unknown>(url: string, data?: unknown) =>
-    apiClient.patch<T>(url, data).then(res => res.data),
-
   delete: <T = unknown>(url: string, params?: unknown) =>
     apiClient.delete<T>(url, { params }).then(res => res.data),
 };

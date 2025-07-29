@@ -11,7 +11,7 @@ export interface CompanyApiResponse {
   success:  true;
 }
 
-export interface CompanyToCreate {
+export interface CompanyToSave {
   name:       string;
   address:    string;
   telephone:  string;

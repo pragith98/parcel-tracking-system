@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Company } from "../types/company.type";
-import { fetchCompany } from "../api/company-api.service";
+import { fetchCompany, saveCompany } from "../api/company-api.service";
 
 interface CompanyState {
-  company:  Company | null;
-  loading:  boolean;
-  error:    string | null;
+  company: Company | null;
+  loading: boolean;
+  error:   string | null;
 }
 
 const initialState: CompanyState = {
@@ -15,6 +15,7 @@ const initialState: CompanyState = {
 };
 
 export const getCompany = createAsyncThunk('company/fetch', fetchCompany);
+export const updateCompany = createAsyncThunk('company/update', saveCompany);
 
 const companySlice = createSlice({
   name: 'company',
@@ -22,6 +23,7 @@ const companySlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
+      // Fetch
       .addCase(getCompany.pending, state => {
         state.loading = true;
         state.error = null;
@@ -34,6 +36,20 @@ const companySlice = createSlice({
         state.loading = false;
         state.error = action.error.message ?? 'Failed to fetch company';
       })
+
+      // Save
+      .addCase(updateCompany.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateCompany.fulfilled, (state, action) => {
+        state.loading = false;
+        state.company = action.payload.data;
+      })
+      .addCase(updateCompany.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Failed to update company';
+      });
   }
 });
 
