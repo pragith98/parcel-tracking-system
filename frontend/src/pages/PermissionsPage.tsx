@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserRoleForm from "../components/UserRoleForm";
+import UserForm from "../components/UserForm";
 
 function PermissionsPage() {
   const [isFormOpen, setFormOpen] = useState(false);
@@ -17,7 +17,7 @@ function PermissionsPage() {
         Open Modal
       </button>
 
-      {isFormOpen ? <UserRoleForm onClose={() => setFormOpen(false)} /> : null}
+      {isFormOpen ? <UserForm onClose={() => setFormOpen(false)} /> : null}
     </div>
   );
 }

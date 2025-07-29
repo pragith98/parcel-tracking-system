@@ -49,7 +49,7 @@ function ModalWindow({ children }: ModalProps) {
             rtl:text-right  
             sm:my-8 
             sm:align-middle 
-            sm:max-w-sm 
+            sm:max-w-2xl 
             sm:w-full 
             sm:p-6
           `}
