@@ -6,15 +6,23 @@ import Alert from "../components/Alert";
 import { getUserRoles, removeUserRole, selectUserRoleById } from "../store/user-role.slice";
 import Button from "../components/Button";
 import UserRoleForm from "../components/UserRoleForm";
+import { UserEvents } from "../constants/user-events";
 
 function UserRolesPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { list, error } = useSelector((state: RootState) => state.userRole);
+  const { currentUserEvent } = useSelector((state: RootState) => state.userEvent);
   const [isFormOpen, setFormOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getUserRoles());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (currentUserEvent === UserEvents.OPEN_USER_ROLE_FORM) {
+      onTriggerOpenForm();
+    }
+  }, [currentUserEvent]);
 
   const onTriggerOpenForm = () => {
     setFormOpen(true);

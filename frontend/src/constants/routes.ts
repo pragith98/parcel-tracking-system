@@ -1,3 +1,5 @@
+import { UserEvents } from "./user-events"
+
 export const ROUTES = {
   HOME: '/',
   PARCELS: '/parcels',
@@ -11,9 +13,9 @@ export const ROUTES = {
 
 export const ROUTE_CONFIG = {
   [ROUTES.HOME]: { showAddNew: false },
-  [ROUTES.PARCELS]: { showAddNew: true },
-  [ROUTES.USERS]: { showAddNew: true },
-  [ROUTES.USER_ROLES]: { showAddNew: true },
+  [ROUTES.PARCELS]: { showAddNew: true, userEvent: UserEvents.OPEN_PARCEL_FORM },
+  [ROUTES.USERS]: { showAddNew: true, userEvent: UserEvents.OPEN_USER_FORM },
+  [ROUTES.USER_ROLES]: { showAddNew: true, userEvent: UserEvents.OPEN_USER_ROLE_FORM },
   [ROUTES.PERMISSIONS]: { showAddNew: false },
   [ROUTES.COMPANY]: { showAddNew: false },
   [ROUTES.NOT_FOUND]: { showAddNew: false },

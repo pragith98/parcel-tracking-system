@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { UserRole } from "../types/user-role.type";
-import { deleteUserRoles, fetchUserRoles, getUserRoleById, updateUserRoleById } from "../api/user-role-api.service";
+import type { UserRole, UserRoleToSave } from "../types/user-role.type";
+import { createUserRole, deleteUserRoles, fetchUserRoles, getUserRoleById, updateUserRoleById } from "../api/user-role-api.service";
 
 interface UserRoleState {
   current: UserRole | null;
@@ -32,6 +32,13 @@ export const updateUserRole = createAsyncThunk(
     await dispatch(getUserRoles());
   }
 );
+export const addNewUserRole = createAsyncThunk(
+  'userRole/create',
+  async (userRole: UserRoleToSave, { dispatch }) => {
+    await createUserRole(userRole);
+    await dispatch(getUserRoles());
+  }
+);
 
 const userRoleSlice = createSlice({
   name: 'userRole',
@@ -50,7 +57,7 @@ const userRoleSlice = createSlice({
       })
       .addCase(getUserRoles.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload.data as UserRole [];
+        state.list = action.payload.data as UserRole[];
       })
       .addCase(getUserRoles.rejected, (state, action) => {
         state.loading = false;
@@ -83,6 +90,20 @@ const userRoleSlice = createSlice({
       .addCase(updateUserRole.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? 'Failed to update user role by id';
+      })
+
+      // Create
+      .addCase(addNewUserRole.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addNewUserRole.fulfilled, (state) => {
+        state.loading = false;
+        state.current = null;
+      })
+      .addCase(addNewUserRole.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Failed to create user role';
       })
 
       // Delete

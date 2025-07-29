@@ -5,9 +5,12 @@ import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import {
+  addNewUserRole,
   resetSelectedUserRole,
   updateUserRole,
 } from "../store/user-role.slice";
+import { addUserEvent } from "../store/user-event.slice";
+import { UserEvents } from "../constants/user-events";
 
 interface UserRoleFormProps {
   onClose: () => void;
@@ -29,6 +32,7 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
 
     return () => {
       dispatch(resetSelectedUserRole());
+      dispatch(addUserEvent(UserEvents.NONE));
     };
   }, [current, dispatch]);
 
@@ -50,6 +54,8 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
 
     if (formData.id) {
       dispatch(updateUserRole(formData));
+    } else {
+      dispatch(addNewUserRole(formData));
     }
 
     onClickClose();
@@ -60,7 +66,9 @@ function UserRoleForm({ onClose }: UserRoleFormProps) {
       {isOpen && (
         <ModalWindow>
           <div className="mt-0 ">
-            <h1 className="text-xl font-bold mb-2">User Role</h1>
+            <h1 className="text-xl font-bold mb-2">
+              {formData.id ? "User Role" : "Create User Role"}
+            </h1>
 
             <form>
               <div>

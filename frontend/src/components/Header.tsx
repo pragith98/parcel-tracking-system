@@ -1,15 +1,17 @@
 import { MdInventory } from "react-icons/md";
-import AddNewItemButton from "./AddNewItemButton";
+import { MdAddCircleOutline } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import { ROUTE_CONFIG } from "../constants/routes";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import { useEffect } from "react";
 import { getCompany } from "../store/company.slice";
+import Button from "./Button";
+import { addUserEvent } from "../store/user-event.slice";
 
 function Header() {
   const location = useLocation();
-  const { showAddNew } = ROUTE_CONFIG[location.pathname] || {};
+  const { showAddNew, userEvent } = ROUTE_CONFIG[location.pathname] || {};
   const dispatch = useDispatch<AppDispatch>();
   const { company } = useSelector((state: RootState) => state.company);
 
@@ -22,6 +24,10 @@ function Header() {
 
   const getUsername = () => {
     return userName.slice(0, 2).toUpperCase();
+  };
+
+  const onClickAddNew = () => {
+    dispatch(addUserEvent(userEvent));
   };
 
   return (
@@ -78,7 +84,14 @@ function Header() {
           </h1>
         </div>
 
-        {showAddNew && <AddNewItemButton />}
+        {showAddNew && (
+          <div className="w-35">
+            <Button variant="primary" onClick={onClickAddNew}>
+              <MdAddCircleOutline size={18} className="mt-1 mr-2" />
+              Add new
+            </Button>
+          </div>
+        )}
       </div>
       {/* End of bottom header */}
     </nav>

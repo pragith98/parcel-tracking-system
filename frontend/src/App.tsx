@@ -20,13 +20,13 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex flex-row">
+      <div className="flex flex-row h-screen">
         {isAuth && <MainMenu />}
 
         <div className="flex flex-col flex-1 w-full">
           {isAuth && <Header />}
 
-          <div className="p-2">
+          <div className="flex-1 overflow-auto p-2">
             <Routes>
               <Route
                 path={ROUTES.LOGIN}
