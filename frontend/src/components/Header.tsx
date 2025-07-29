@@ -2,12 +2,21 @@ import { MdInventory } from "react-icons/md";
 import AddNewItemButton from "./AddNewItemButton";
 import { useLocation } from "react-router-dom";
 import { ROUTE_CONFIG } from "../constants/routes";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { useEffect } from "react";
+import { getCompany } from "../store/company.slice";
 
 function Header() {
   const location = useLocation();
   const { showAddNew } = ROUTE_CONFIG[location.pathname] || {};
+  const dispatch = useDispatch<AppDispatch>();
+  const { company } = useSelector((state: RootState) => state.company);
 
-  const companyName = "Flash Delivers";
+  useEffect(() => {
+    dispatch(getCompany());
+  }, [dispatch]);
+
   const currentPageTitle = "All Parcels";
   const userName = "Kasun";
 
@@ -32,7 +41,7 @@ function Header() {
       >
         <div className="flex flex-row items-center">
           <span className="text-lg font-black text-gray-300">
-            {companyName}
+            {company ? company.name : "company name"}
           </span>
         </div>
 
