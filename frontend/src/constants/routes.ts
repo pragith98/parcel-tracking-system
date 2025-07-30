@@ -12,11 +12,11 @@ export const ROUTES = {
 }
 
 export const ROUTE_CONFIG = {
-  [ROUTES.HOME]: { showAddNew: false },
-  [ROUTES.PARCELS]: { showAddNew: true, userEvent: UserEvents.OPEN_PARCEL_FORM },
-  [ROUTES.USERS]: { showAddNew: true, userEvent: UserEvents.OPEN_USER_FORM },
-  [ROUTES.USER_ROLES]: { showAddNew: true, userEvent: UserEvents.OPEN_USER_ROLE_FORM },
-  [ROUTES.PERMISSIONS]: { showAddNew: false },
-  [ROUTES.COMPANY]: { showAddNew: false },
-  [ROUTES.NOT_FOUND]: { showAddNew: false },
+  [ROUTES.HOME]: { showAddNew: false, title: 'Dashboard' },
+  [ROUTES.PARCELS]: { showAddNew: true, userEvent: UserEvents.OPEN_PARCEL_FORM, title: 'Parcels' },
+  [ROUTES.USERS]: { showAddNew: true, userEvent: UserEvents.OPEN_USER_FORM, title: 'Users' },
+  [ROUTES.USER_ROLES]: { showAddNew: true, userEvent: UserEvents.OPEN_USER_ROLE_FORM, title: 'User Roles' },
+  [ROUTES.PERMISSIONS]: { showAddNew: false, title: 'Permissions' },
+  [ROUTES.COMPANY]: { showAddNew: false, title: 'Company' },
+  [ROUTES.NOT_FOUND]: { showAddNew: false, title: 'Not found' },
 }

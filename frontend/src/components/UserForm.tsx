@@ -96,7 +96,7 @@ function UserForm({ onClose }: UserFormProps) {
       alert("Username is required.");
       return false;
     }
-    if (!formData.userRoleId.trim() || formData.userRoleId === '0') {
+    if (!formData.userRoleId.trim() || formData.userRoleId === "0") {
       alert("User role is required.");
       return false;
     }
@@ -137,7 +137,9 @@ function UserForm({ onClose }: UserFormProps) {
       {isOpen && (
         <ModalWindow>
           <div>
-            <h1 className="text-xl font-bold mb-2">User</h1>
+            <h1 className="text-xl font-bold mb-2">
+              {formData.id ? "User" : "Create User"}
+            </h1>
 
             <form className="grid gap-6 mt-4 grid-cols-2 w-full">
               <div>

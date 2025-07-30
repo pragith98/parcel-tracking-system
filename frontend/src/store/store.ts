@@ -4,6 +4,7 @@ import authReducer from './auth.slice';
 import userRoleReducer from './user-role.slice';
 import userEventReducer from './user-event.slice';
 import userReducer from './user.slice';
+import parcelReducer from './parcel.slice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     auth: authReducer,
     userRole: userRoleReducer,
     userEvent: userEventReducer,
-    user: userReducer
+    user: userReducer,
+    parcel: parcelReducer,
   },
 });
 

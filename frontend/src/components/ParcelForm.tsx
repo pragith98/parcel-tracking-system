@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormStyles } from "../styles";
 import ModalWindow from "./ModalWindow";
 import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import {
+  addNewParcel,
+  resetSelectedParcel,
+  updateParcel,
+} from "../store/parcel.slice";
+import { addUserEvent } from "../store/user-event.slice";
+import { UserEvents } from "../constants/user-events";
 
 interface ParcelFormProps {
   onClose: () => void;
 }
 
 function ParcelForm({ onClose }: ParcelFormProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const { current } = useSelector((state: RootState) => state.parcel);
   const [isOpen, setOpen] = useState(true);
   const [formData, setFormData] = useState({
+    id: "",
     receiverName: "",
     receiverTelephone: "",
     receiverEmail: "",
@@ -22,6 +34,30 @@ function ParcelForm({ onClose }: ParcelFormProps) {
     senderCity: "",
     remarks: "",
   });
+
+  useEffect(() => {
+    if (current) {
+      setFormData({
+        id: current.id,
+        receiverName: current.receiverName,
+        receiverTelephone: current.receiverTelephone,
+        receiverEmail: current.receiverEmail,
+        receiverAddress: current.receiverAddress,
+        receiverCity: current.receiverCity,
+        senderName: current.senderName,
+        senderTelephone: current.senderTelephone,
+        senderEmail: current.senderEmail,
+        senderAddress: current.senderAddress,
+        senderCity: current.senderCity,
+        remarks: current.remarks,
+      });
+    }
+
+    return () => {
+      dispatch(resetSelectedParcel());
+      dispatch(addUserEvent(UserEvents.NONE));
+    };
+  }, [current, dispatch]);
 
   const onClickClose = () => {
     setOpen(false);
@@ -38,12 +74,93 @@ function ParcelForm({ onClose }: ParcelFormProps) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const formDataValidate = (): boolean => {
+    if (!formData.receiverName.trim()) {
+      alert("Receiver name is required.");
+      return false;
+    }
+    if (!formData.receiverTelephone.trim()) {
+      alert("Receiver telephone is required.");
+      return false;
+    }
+    if (
+      !formData.receiverEmail.trim() ||
+      !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.receiverEmail)
+    ) {
+      alert("A valid receiver email is required.");
+      return false;
+    }
+    if (!formData.receiverAddress.trim()) {
+      alert("Receiver address is required.");
+      return false;
+    }
+    if (!formData.receiverCity.trim()) {
+      alert("Receiver city is required.");
+      return false;
+    }
+    if (!formData.senderName.trim()) {
+      alert("Sender name is required.");
+      return false;
+    }
+    if (!formData.senderTelephone.trim()) {
+      alert("Sender telephone is required.");
+      return false;
+    }
+    if (
+      !formData.senderEmail.trim() ||
+      !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.senderEmail)
+    ) {
+      alert("A valid sender email is required.");
+      return false;
+    }
+    if (!formData.senderAddress.trim()) {
+      alert("Sender address is required.");
+      return false;
+    }
+    if (!formData.senderCity.trim()) {
+      alert("Sender city is required.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const onClickSubmit = () => {
+    if (!formDataValidate()) return;
+
+    if (formData.id) {
+      dispatch(
+        updateParcel({
+          id: formData.id,
+          receiverName: formData.receiverName,
+          receiverTelephone: formData.receiverTelephone,
+          receiverEmail: formData.receiverEmail,
+          receiverAddress: formData.receiverAddress,
+          receiverCity: formData.receiverCity,
+          senderName: formData.senderName,
+          senderTelephone: formData.senderTelephone,
+          senderEmail: formData.senderEmail,
+          senderAddress: formData.senderAddress,
+          senderCity: formData.senderCity,
+          remarks: formData.remarks,
+          estimatedDeliveryDate: "",
+        })
+      );
+    } else {
+      dispatch(addNewParcel(formData));
+    }
+
+    onClickClose();
+  };
+
   return (
     <>
       {isOpen && (
         <ModalWindow>
           <div>
-            <h1 className="text-xl font-bold mb-2">User</h1>
+            <h1 className="text-xl font-bold mb-2">
+              {formData.id ? "Parcel" : "Create Parcel"}
+            </h1>
 
             <form>
               <h1 className={FormStyles.formSectionTitle}>Receiver Details</h1>
@@ -190,8 +307,9 @@ function ParcelForm({ onClose }: ParcelFormProps) {
               <div className="mt-6">
                 <label className={FormStyles.formFieldLabel}>Remarks</label>
                 <textarea
-                  id="remarks"
+                  name="remarks"
                   className={FormStyles.formField}
+                  value={formData.remarks}
                   rows={1}
                   onChange={handleTextAreaChange}
                 />
@@ -204,7 +322,7 @@ function ParcelForm({ onClose }: ParcelFormProps) {
               <Button variant="outlined" onClick={onClickClose}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={onClickClose}>
+              <Button variant="primary" onClick={onClickSubmit}>
                 Save
               </Button>
             </div>
