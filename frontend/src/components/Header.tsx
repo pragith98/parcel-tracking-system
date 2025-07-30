@@ -1,18 +1,31 @@
 import { MdInventory } from "react-icons/md";
-import AddNewItemButton from "./AddNewItemButton";
+import { MdAddCircleOutline } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import { ROUTE_CONFIG } from "../constants/routes";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { useEffect } from "react";
+import { getCompany } from "../store/company.slice";
+import Button from "./Button";
+import { addUserEvent } from "../store/user-event.slice";
 
 function Header() {
   const location = useLocation();
-  const { showAddNew } = ROUTE_CONFIG[location.pathname] || {};
+  const { showAddNew, userEvent, title } = ROUTE_CONFIG[location.pathname] || {};
+  const dispatch = useDispatch<AppDispatch>();
+  const { company } = useSelector((state: RootState) => state.company);
+  const { authUser } = useSelector((state: RootState) => state.auth);
 
-  const companyName = "Flash Delivers";
-  const currentPageTitle = "All Parcels";
-  const userName = "Kasun";
+  useEffect(() => {
+    dispatch(getCompany());
+  }, [dispatch]);
 
   const getUsername = () => {
-    return userName.slice(0, 2).toUpperCase();
+    return authUser?.name.slice(0, 2).toUpperCase();
+  };
+
+  const onClickAddNew = () => {
+    dispatch(addUserEvent(userEvent));
   };
 
   return (
@@ -32,7 +45,7 @@ function Header() {
       >
         <div className="flex flex-row items-center">
           <span className="text-lg font-black text-gray-300">
-            {companyName}
+            {company ? company.name : "company name"}
           </span>
         </div>
 
@@ -65,11 +78,18 @@ function Header() {
         <div className="flex items-center gap-3">
           <MdInventory size={20} className="text-gray-500" />
           <h1 className="text-gray-800 font-semibold text-xl">
-            {currentPageTitle}
+            {title}
           </h1>
         </div>
 
-        {showAddNew && <AddNewItemButton />}
+        {showAddNew && (
+          <div className="w-35">
+            <Button variant="primary" onClick={onClickAddNew}>
+              <MdAddCircleOutline size={18} className="mt-1 mr-2" />
+              Add new
+            </Button>
+          </div>
+        )}
       </div>
       {/* End of bottom header */}
     </nav>
