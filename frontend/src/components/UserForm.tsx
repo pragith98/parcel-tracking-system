@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormStyles } from "../styles";
 import ModalWindow from "./ModalWindow";
 import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { addNewUser, resetSelectedUser, updateUser } from "../store/user.slice";
+import { addUserEvent } from "../store/user-event.slice";
+import { UserEvents } from "../constants/user-events";
+import { getUserRoles } from "../store/user-role.slice";
 
 interface UserFormProps {
   onClose: () => void;
 }
 
 function UserForm({ onClose }: UserFormProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const { current } = useSelector((state: RootState) => state.user);
+  const userRoles = useSelector((state: RootState) => state.userRole);
   const [isOpen, setOpen] = useState(true);
   const [formData, setFormData] = useState({
+    id: "",
     name: "",
     email: "",
     telephone: "",
@@ -19,6 +29,29 @@ function UserForm({ onClose }: UserFormProps) {
     password: "",
     userRoleId: "",
   });
+
+  useEffect(() => {
+    if (current) {
+      setFormData({
+        id: current.id,
+        name: current.name,
+        email: current.email,
+        telephone: current.telephone,
+        nic: current.nic,
+        address: current.address,
+        username: "",
+        password: "",
+        userRoleId: current.userRole.id,
+      });
+    }
+
+    dispatch(getUserRoles());
+
+    return () => {
+      dispatch(resetSelectedUser());
+      dispatch(addUserEvent(UserEvents.NONE));
+    };
+  }, [current, dispatch]);
 
   const onClickClose = () => {
     setOpen(false);
@@ -33,6 +66,70 @@ function UserForm({ onClose }: UserFormProps) {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const formDataValidate = (): boolean => {
+    if (!formData.name.trim()) {
+      alert("Company name is required.");
+      return false;
+    }
+    if (!formData.telephone.trim()) {
+      alert("Telephone is required.");
+      return false;
+    }
+    if (
+      !formData.email.trim() ||
+      !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)
+    ) {
+      alert("A valid email is required.");
+      return false;
+    }
+    if (!formData.address.trim()) {
+      alert("Address is required.");
+      return false;
+    }
+    if (!formData.nic.trim()) {
+      alert("NIC is required.");
+      return false;
+    }
+    if (!formData.username.trim()) {
+      alert("Username is required.");
+      return false;
+    }
+    if (!formData.userRoleId.trim() || formData.userRoleId === '0') {
+      alert("User role is required.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const onClickSubmit = () => {
+    if (!formDataValidate()) return;
+
+    if (!formData.id && !formData.password.trim()) {
+      alert("Password is required.");
+      return false;
+    }
+
+    if (formData.id) {
+      dispatch(
+        updateUser({
+          id: formData.id,
+          name: formData.name,
+          email: formData.email,
+          telephone: formData.telephone,
+          nic: formData.nic,
+          address: formData.address,
+          username: formData.username,
+          userRoleId: formData.userRoleId,
+        })
+      );
+    } else {
+      dispatch(addNewUser(formData));
+    }
+
+    onClickClose();
   };
 
   return (
@@ -130,7 +227,7 @@ function UserForm({ onClose }: UserFormProps) {
                   onChange={handleSelectChange}
                 >
                   <option value="0">-- Select --</option>
-                  {userRoles.map((role) => (
+                  {userRoles.list.map((role) => (
                     <option value={role.id} key={role.id}>
                       {role.name}
                     </option>
@@ -145,7 +242,7 @@ function UserForm({ onClose }: UserFormProps) {
               <Button variant="outlined" onClick={onClickClose}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={onClickClose}>
+              <Button variant="primary" onClick={onClickSubmit}>
                 Save
               </Button>
             </div>
@@ -155,11 +252,5 @@ function UserForm({ onClose }: UserFormProps) {
     </>
   );
 }
-
-const userRoles = [
-  { id: "1", name: "ADMIN" },
-  { id: "2", name: "OWNER" },
-  { id: "3", name: "WORKER" },
-];
 
 export default UserForm;

@@ -8,6 +8,6 @@ export interface UserRoleApiResponse {
   success:  true;
 }
 
-export interface UserRoleToSave {
+export interface UserRoleToCreate {
   name: string;
 }

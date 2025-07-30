@@ -1,5 +1,5 @@
 import { api } from "../services/api.service";
-import type { UserRole, UserRoleApiResponse, UserRoleToSave } from "../types/user-role.type";
+import type { UserRole, UserRoleApiResponse, UserRoleToCreate } from "../types/user-role.type";
 
 export const fetchUserRoles = async (): Promise<UserRoleApiResponse> => {
   return api.get<UserRoleApiResponse>('/user-roles');
@@ -16,7 +16,7 @@ export const updateUserRoleById = async (
 }
 
 export const createUserRole = async (
-  userRole: UserRoleToSave
+  userRole: UserRoleToCreate
 ): Promise<UserRoleApiResponse> => {
   return api.post<UserRoleApiResponse>('/user-roles/', userRole);
 }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { UserRole, UserRoleToSave } from "../types/user-role.type";
+import type { UserRole, UserRoleToCreate } from "../types/user-role.type";
 import { createUserRole, deleteUserRoles, fetchUserRoles, getUserRoleById, updateUserRoleById } from "../api/user-role-api.service";
 
 interface UserRoleState {
@@ -34,7 +34,7 @@ export const updateUserRole = createAsyncThunk(
 );
 export const addNewUserRole = createAsyncThunk(
   'userRole/create',
-  async (userRole: UserRoleToSave, { dispatch }) => {
+  async (userRole: UserRoleToCreate, { dispatch }) => {
     await createUserRole(userRole);
     await dispatch(getUserRoles());
   }
