@@ -11,6 +11,9 @@ import {
 } from "../store/parcel.slice";
 import { addUserEvent } from "../store/user-event.slice";
 import { UserEvents } from "../constants/user-events";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 interface ParcelFormProps {
   onClose: () => void;
@@ -33,6 +36,7 @@ function ParcelForm({ onClose }: ParcelFormProps) {
     senderAddress: "",
     senderCity: "",
     remarks: "",
+    estimatedDeliveryDate: null as Date | null | string,
   });
 
   useEffect(() => {
@@ -50,6 +54,7 @@ function ParcelForm({ onClose }: ParcelFormProps) {
         senderAddress: current.senderAddress,
         senderCity: current.senderCity,
         remarks: current.remarks,
+        estimatedDeliveryDate: current.estimatedDeliveryDate ?? "",
       });
     }
 
@@ -143,7 +148,9 @@ function ParcelForm({ onClose }: ParcelFormProps) {
           senderAddress: formData.senderAddress,
           senderCity: formData.senderCity,
           remarks: formData.remarks,
-          estimatedDeliveryDate: "",
+          estimatedDeliveryDate: formData.estimatedDeliveryDate
+            ? format(formData.estimatedDeliveryDate, "yyyy-MM-dd")
+            : "",
         })
       );
     } else {
@@ -302,17 +309,38 @@ function ParcelForm({ onClose }: ParcelFormProps) {
                     onChange={handleInputChange}
                   />
                 </div>
-              </div>
 
-              <div className="mt-6">
-                <label className={FormStyles.formFieldLabel}>Remarks</label>
-                <textarea
-                  name="remarks"
-                  className={FormStyles.formField}
-                  value={formData.remarks}
-                  rows={1}
-                  onChange={handleTextAreaChange}
-                />
+                {formData.id && (
+                  <div>
+                    <label className={FormStyles.formFieldLabel}>
+                      Estimated Deliver Date
+                    </label>
+                    <DatePicker
+                      name="estimatedDeliveryDate"
+                      selected={formData.estimatedDeliveryDate as Date}
+                      onChange={(date: Date | null) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          estimatedDeliveryDate: date,
+                        }))
+                      }
+                      className="block w-full rounded-md border border-gray-300 p-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Select a date"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <label className={FormStyles.formFieldLabel}>Remarks</label>
+                  <textarea
+                    name="remarks"
+                    className={FormStyles.formField}
+                    value={formData.remarks}
+                    rows={1}
+                    onChange={handleTextAreaChange}
+                  />
+                </div>
               </div>
             </form>
           </div>

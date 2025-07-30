@@ -6,3 +6,5 @@
 3. npm install react-router-dom
 4. npm install @reduxjs/toolkit react-redux
 5. npm install axios
+6. npm install react-datepicker
+7. npm install date-fns
