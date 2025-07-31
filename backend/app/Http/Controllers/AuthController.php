@@ -32,6 +32,19 @@ class AuthController extends Controller
         }
     }
 
+    public function getUser()
+    {
+        try {
+            $auth = $this->repository->getUser();
+            $userData = json_decode($auth->getContent(), true);
+            $transformedData = new AuthResource($userData);
+    
+            return response($transformedData);
+        } catch (Exception $e) { 
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+
     public function logout(Request $request)
     {
         try {

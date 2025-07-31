@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('receiverTelephone', 10);
             $table->string('receiverAddress', 255);
             $table->string('receiverEmail', 255);
+            $table->string('receiverCity', 255);
             $table->string('senderName', 255);
             $table->string('senderTelephone', 10);
             $table->string('senderAddress', 255);
             $table->string('senderEmail', 255);
+            $table->string('senderCity', 255);
             $table->date('estimatedDeliveryDate')->nullable();
             $table->date('pickedUpAt')->nullable();
             $table->date('deliveredAt')->nullable();
