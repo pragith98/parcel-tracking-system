@@ -12,11 +12,20 @@ import UserRolesPage from "./pages/UserRolesPage";
 import CompanyPage from "./pages/CompanyPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
-import { useSelector } from "react-redux";
-import type { RootState } from "./store/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "./store/store";
+import { getAuthUser } from "./store/auth.slice";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
   const { isAuth } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (!isAuth) {
+      dispatch(getAuthUser());
+    }
+  }, [isAuth, dispatch]);
 
   return (
     <BrowserRouter>

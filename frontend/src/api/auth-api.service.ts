@@ -8,5 +8,5 @@ export const userLogin = async (
 }
 
 export const fetchAuthUser = async (): Promise<AuthApiResponse> => {
-  return api.get<AuthApiResponse>('/company-info');
+  return api.get<AuthApiResponse>('/auth/user');
 }
