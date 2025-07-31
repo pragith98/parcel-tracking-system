@@ -33,6 +33,18 @@ class AuthRepository implements AuthRepositoryInterface
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
+    public function getUser()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        $user->userRole->permissions;
+        return response($user);
+    }
+
     public function logout(Request $request)
     {
         if ($request->user()) {
