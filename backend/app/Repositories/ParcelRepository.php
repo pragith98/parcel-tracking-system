@@ -29,8 +29,12 @@ class ParcelRepository implements ParcelRepositoryInterface
             $completed = $validatedRequest['completed'] ?? 'NOT_COMPLETED';
             $senderName = $validatedRequest['senderName'] ?? null;
             $senderTelephone = $validatedRequest['senderTelephone'] ?? null;
+            $senderCity = $validatedRequest['senderCity'] ?? null;
+            $senderAddress = $validatedRequest['senderAddress'] ?? null;
             $receiverName = $validatedRequest['receiverName'] ?? null;
             $receiverTelephone = $validatedRequest['receiverTelephone'] ?? null;
+            $receiverCity = $validatedRequest['receiverCity'] ?? null;
+            $receiverAddress = $validatedRequest['receiverAddress'] ?? null;
             $code = $validatedRequest['code'] ?? null;
             $pickedUpAt = $validatedRequest['pickedUpAt'] ?? null;
             $deliveredAt = $validatedRequest['deliveredAt'] ?? null;
@@ -49,11 +53,23 @@ class ParcelRepository implements ParcelRepositoryInterface
             if ($senderTelephone) {
                 $query->where('senderTelephone', 'like', '%' . $senderTelephone . '%');
             }
+            if ($senderCity) {
+                $query->where('senderCity', 'like', '%' . $senderCity . '%');
+            }
+            if ($senderAddress) {
+                $query->where('senderAddress', 'like', '%' . $senderAddress . '%');
+            }
             if ($receiverName) {
                 $query->where('receiverName', 'like', '%' . $receiverName . '%');
             }
             if ($receiverTelephone) {
                 $query->where('receiverTelephone', 'like', '%' . $receiverTelephone . '%');
+            }
+            if ($receiverCity) {
+                $query->where('receiverCity', 'like', '%' . $receiverCity . '%');
+            }
+            if ($receiverAddress) {
+                $query->where('receiverAddress', 'like', '%' . $receiverAddress . '%');
             }
             if ($code) {
                 $query->where('code', 'like', '%' . $code . '%');
@@ -101,11 +117,13 @@ class ParcelRepository implements ParcelRepositoryInterface
                 'receiverName' => $validatedData['receiverName'],
                 'receiverTelephone' => $validatedData['receiverTelephone'],
                 'receiverAddress' => $validatedData['receiverAddress'],
+                'receiverCity' => $validatedData['receiverCity'],
                 'receiverEmail' => $validatedData['receiverEmail'],
                 'senderName' => $validatedData['senderName'],
                 'senderTelephone' => $validatedData['senderTelephone'],
                 'senderAddress' => $validatedData['senderAddress'],
                 'senderEmail' => $validatedData['senderEmail'],
+                'senderCity' => $validatedData['senderCity'],
                 'code' => uniqid('parcel_')
             ];
 
@@ -129,10 +147,12 @@ class ParcelRepository implements ParcelRepositoryInterface
                 'receiverTelephone' => $validatedData['receiverTelephone'],
                 'receiverAddress' => $validatedData['receiverAddress'],
                 'receiverEmail' => $validatedData['receiverEmail'],
+                'receiverCity' => $validatedData['receiverCity'],
                 'senderName' => $validatedData['senderName'],
                 'senderTelephone' => $validatedData['senderTelephone'],
                 'senderAddress' => $validatedData['senderAddress'],
                 'senderEmail' => $validatedData['senderEmail'],
+                'senderCity' => $validatedData['senderCity'],
                 'estimatedDeliveryDate' => $validatedData['estimatedDeliveryDate'],
             ];
 

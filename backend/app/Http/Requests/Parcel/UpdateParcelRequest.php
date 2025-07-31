@@ -29,10 +29,12 @@ class UpdateParcelRequest extends FormRequest
             'receiverTelephone' => ['required','max:10'],
             'receiverAddress' => ['required','max:255'],
             'receiverEmail' => ['required','email','max:255'],
+            'receiverCity' => ['required','max:255'],
             'senderName' => ['required','max:255'],
             'senderTelephone' => ['required','max:10'],
             'senderAddress' => ['required','max:255'],
             'senderEmail' => ['required','email','max:255'],
+            'senderCity' => ['required','max:255'],
             'estimatedDeliveryDate' => ['nullable']
         ];
     }
