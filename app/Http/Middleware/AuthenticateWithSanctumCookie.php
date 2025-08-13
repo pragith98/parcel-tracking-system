@@ -17,6 +17,8 @@ class AuthenticateWithSanctumCookie
      */
     public function handle(Request $request, Closure $next): Response
     {
+        return $next($request);
+        
         // Get the token from the cookie
         $token = $request->cookie('auth_token');
 
