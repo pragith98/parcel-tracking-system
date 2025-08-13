@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegistered;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserPasswordRequest;
@@ -45,6 +46,10 @@ class UserController extends Controller
     {
         try {
             $user = $this->repository->create($request);
+
+            // Dispatch the event
+            event(new UserRegistered($user));
+
             return new UserResource($user);
         } catch (Exception $e) { 
             return ApiResponse::error($e->getMessage(), 500);
@@ -56,8 +61,8 @@ class UserController extends Controller
         UpdateUserRequest $request
     ) {
         try {
-            $userRole = $this->repository->update($id, $request);
-            return new UserResource($userRole);
+            $user = $this->repository->update($id, $request);
+            return new UserResource($user);
         } catch (Exception $e) { 
             return ApiResponse::error($e->getMessage(), 500);
         }
